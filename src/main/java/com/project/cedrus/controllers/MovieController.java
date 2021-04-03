@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.http.HttpStatus;
+
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
@@ -29,5 +31,11 @@ public class MovieController {
         Movie movie = movieRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Requested movie id : "+id.toString()+ " was not found."));
 
         return ResponseEntity.ok().body(movie);
+    }
+    @CrossOrigin
+    @PostMapping("")
+    public ResponseEntity<String> addMovie(@RequestBody Movie movie){
+        this.movieRepository.save(movie);
+        return new ResponseEntity<String>("Created", HttpStatus.CREATED);
     }
 }
